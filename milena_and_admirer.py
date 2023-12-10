@@ -22,9 +22,8 @@ def break_amt(x, k):
     if rem == 0:
         return ((x // k) - 1, k)
     
-    amt = x // k
     to_break = rem + k
-    return (amt, to_break // 2)
+    return (x // k, to_break // 2)
 
 def sol(l):
     count = 0
@@ -32,7 +31,6 @@ def sol(l):
 
     for i in reversed(range(len(l))):
         if l[i] > no_to_hit:
-
             amt, no_to_hit = break_amt(l[i], no_to_hit)
             count += amt
         else:
