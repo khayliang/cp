@@ -1,5 +1,4 @@
 import sys
-from collections import deque, defaultdict
 
 input = sys.stdin.readline
 
@@ -14,4 +13,18 @@ def insr():
 def invr():
     return(map(int,input().split()))
 
+
 for _ in range(inp()):
+    n = inp()
+    a = inlt()
+    mx = 0
+    if n == 2:
+        print(min(a))
+        continue
+        
+    for i in range(n - 2):
+        s = list(a[i:i + 3])
+        s.sort()
+        mx = max(mx, s[1])
+
+    print(mx) 
