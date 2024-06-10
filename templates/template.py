@@ -14,4 +14,20 @@ def insr():
 def invr():
     return(map(int,input().split()))
 
-for _ in range(inp()):
+# use yield to give ans. return to stop
+def solve(): 
+
+def test():
+    ans = []
+    for _ in range(inp()):
+        for a in solve():
+            ans.append(a)
+    for i in ans:
+        print(i)
+
+def submit():
+    for _ in range(inp()):
+        for a in solve():
+            print(a)
+
+submit()

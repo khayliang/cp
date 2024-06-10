@@ -18,7 +18,6 @@ def binary_search(arr, l, h, x):
             l = m + 1
         else:
             h = m
-        print(l, h, m)
             
     return (False, m)
 
