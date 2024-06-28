@@ -15,7 +15,7 @@ def invr():
     return(map(int,input().split()))
 
 # use yield to give ans. return to stop
-def solve(): 
+def solve():
 
 def test():
     ans = []
