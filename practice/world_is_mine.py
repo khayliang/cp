@@ -14,13 +14,36 @@ def insr():
 def invr():
     return(map(int,input().split()))
 
-############ ---- Output Parsing Functions ---- ############
-def outlt(a):
-    return " ".join(map(str, a))
-
-
 # use yield to give ans. return to stop
 def solve():
+    n = inp()
+    a = inlt()
+    d = defaultdict(lambda: 0)
+    for x in a:
+        d[x] += 1
+    
+    a = sorted(d.keys())
+    c = [d[x] for x in a]
+
+    m = len(a)
+
+    dp = [float('inf') for _ in range(m + 1)]
+    dp[0] = 0
+    
+    for i in range(1, m + 1):
+        ndp = list(dp)
+        for j in range(1, m + 1):
+            s = dp[j - 1] + c[i - 1]
+            if s <= i - j:
+                ndp[j] = min(dp[j], s)
+        dp = ndp
+    
+    k = 0
+    for i in range(m + 1):
+        if dp[i] != float('inf'):
+            k = i
+    
+    yield m - k
 
 def test():
     ans = []

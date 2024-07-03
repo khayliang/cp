@@ -18,9 +18,36 @@ def invr():
 def outlt(a):
     return " ".join(map(str, a))
 
-
 # use yield to give ans. return to stop
 def solve():
+    n, c = inlt()
+    a = inlt()
+    a[0] += c
+    mx = max(a)
+
+    pf = [a[0]]
+    for i in range(1, n):
+        pf.append(a[i] + pf[-1])
+    
+    res = []
+
+    first_mx = -1
+
+    for i in range(n):
+        if a[i] < mx:
+            if pf[i] < mx:
+                res.append(i + 1)
+            else:
+                res.append(i)
+        elif a[i] == mx:
+            if first_mx == -1:
+                first_mx = i
+                res.append(0)
+            else:
+                res.append(i)
+
+    
+    yield outlt(res)
 
 def test():
     ans = []
