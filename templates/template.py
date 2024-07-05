@@ -14,7 +14,7 @@ def insr():
 def invr():
     return(map(int,input().split()))
 
-############ ---- Output Parsing Functions ---- ############
+############ ---- Output Functions ---- ############
 def outlt(a):
     return " ".join(map(str, a))
 
