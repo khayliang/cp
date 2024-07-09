@@ -22,6 +22,32 @@ def outlt(a):
 
 # use yield to give ans. return to stop
 def solve():
+    n = inp()
+    a = inlt()
+    mx = 0
+    k = []
+    for x in a:
+        if mx == 0:
+            mx = x
+            continue
+        
+        if x < mx:
+            k.append(mx - x)
+        else:
+            mx = x
+
+    k.sort()
+    prev = 0
+    res = 0
+
+    for i, x in enumerate(k):
+        if prev == x:
+            continue
+
+        res += (x - prev) * (len(k) - i + 1)
+        prev = x
+    
+    yield res
 
 def test():
     ans = []

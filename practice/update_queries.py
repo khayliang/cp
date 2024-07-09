@@ -22,6 +22,18 @@ def outlt(a):
 
 # use yield to give ans. return to stop
 def solve():
+    n, m = inlt()
+    s = insr()
+    ind = inlt()
+    c = insr()
+
+    ind = sorted(list(set(ind)))
+    c = sorted(c)[:len(ind)]
+
+    for i, x in enumerate(ind):
+        s[x - 1] = c[i]
+
+    yield ''.join(s)
 
 def test():
     ans = []

@@ -22,6 +22,8 @@ def outlt(a):
 
 # use yield to give ans. return to stop
 def solve():
+    n, k = inlt()
+    yield k * (n - 1) + 1
 
 def test():
     ans = []

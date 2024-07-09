@@ -22,6 +22,17 @@ def outlt(a):
 
 # use yield to give ans. return to stop
 def solve():
+    n = inp()
+    h = inlt()
+    t = 0
+    for i in range(n - 1, -1, -1):
+        if t == 0:
+            t = h[i]
+            continue
+        
+        t = max(h[i], t + 1)
+    yield t
+        
 
 def test():
     ans = []
@@ -36,4 +47,4 @@ def submit():
         for a in solve():
             print(a)
 
-submit()
+test()
