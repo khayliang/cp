@@ -22,12 +22,10 @@ def outlt(a):
 # use yield to give ans. return to stop
 def solve():
     n = inp()
-    for i in range(1, n):
-        if i % 2 == 0:
-            yield f"1 {i}"
-        else:
-             yield f"{i} 1"
-    yield f"{n} {n}"
+    yield "1 1"
+    yield "1 2"
+    for i in range(3, n + 1):
+        yield f"{i} {i}"
 
 def test():
     ans = []

@@ -26,7 +26,7 @@ def count_inversions(a):
 
     la, li = count_inversions(a[:n // 2])
     ra, ri = count_inversions(a[n // 2:])
-
+    m = n // 2
     l = 0
     r = 0
     s = []
@@ -46,7 +46,7 @@ def count_inversions(a):
         else:
             s.append(ra[r])
             r += 1
-            inv += 1
+            inv += m - l
 
     return s, inv
         
