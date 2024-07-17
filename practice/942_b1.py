@@ -1,5 +1,4 @@
 import sys
-import math
 from collections import deque, defaultdict
 from itertools import permutations
 
@@ -25,6 +24,11 @@ INF = float('inf')
 
 # use yield to give ans. return to stop
 def solve():
+    n, m = inlt()
+    res = 0
+    for b in range(1, m + 1):
+        res += ((n // b)  + 1) // b
+    yield res - 1
 
 def test():
     ans = []
