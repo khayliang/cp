@@ -19,6 +19,8 @@ def invr():
 def outlt(a):
     return " ".join(map(str, a))
 
+############ ---- Constants ---- ############
+INF = float('inf')
 
 # use yield to give ans. return to stop
 def solve():
