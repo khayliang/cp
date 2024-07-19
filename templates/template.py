@@ -2,6 +2,7 @@ import sys
 import math
 from collections import deque, defaultdict
 from itertools import permutations
+import bisect
 
 input = sys.stdin.readline
 
