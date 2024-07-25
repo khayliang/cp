@@ -3,6 +3,7 @@ import math
 from collections import deque, defaultdict
 from itertools import permutations
 import bisect
+from types import GeneratorType
 
 input = sys.stdin.readline
 
@@ -23,6 +24,32 @@ def outlt(a):
 
 ############ ---- Constants ---- ############
 INF = float('inf')
+
+############ ---- Function to Bootstrap Recursion ---- ############
+"""
+Add the decorator @bootstrap above the recursive function.
+For the recursion to work, yield the recusive function.
+Recursive function must yield something regardless
+To return a value, add the line yield yield fn()
+"""
+def bootstrap(f, stack=[]):
+    def wrappedfunc(*args, **kwargs):
+        if stack:
+            return f(*args, **kwargs)
+        else:
+            to = f(*args, **kwargs)
+            while True:
+                if type(to) is GeneratorType:
+                    stack.append(to)
+                    to = next(to)
+                else:
+                    stack.pop()
+                    if not stack:
+                        break
+                    to = stack[-1].send(to)
+            return to
+    return wrappedfunc
+    
 
 # use yield to give ans. return to stop
 def solve():
