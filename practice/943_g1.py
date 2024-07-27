@@ -49,11 +49,54 @@ def bootstrap(f, stack=deque()):
                     to = stack[-1].send(to)
             return to
     return wrappedfunc
+
+def z_function(s):
+    n = len(s)
+    z = [0 for _ in range(n)]
+    l, r = 0, 0
+    for i in range(1, n):
+        if i < r:
+            z[i] = min(r - i, z[i - l])
+        while i + z[i] < n and s[z[i]] == s[i + z[i]]:
+            z[i] += 1
+        if i + z[i] > r:
+            l = i
+            r = i + z[i]
+    return z
     
 
 # use yield to give ans. return to stop
 def solve():
+    n, k, _ = inlt()
+    s = insr()
 
+    z = z_function(s)
+
+    if k == 1:
+        yield n
+        return
+    
+    @bootstrap
+    def find(l=0, r=n):
+        if l >= r - 1:
+            yield l
+        m = (l + r) // 2
+        amt = 1
+        i = m
+        while i < n:
+            if z[i] >= m:
+                amt += 1
+                i += m
+            else:
+                i += 1
+
+        if amt < k:
+            yield (yield find(l, m))
+        else:
+            yield (yield find(m, r))
+    
+    yield find()
+        
 def test():
     ans = []
     for _ in range(inp()):
