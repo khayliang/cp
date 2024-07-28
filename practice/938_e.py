@@ -54,6 +54,31 @@ def bootstrap(f, stack=deque()):
 
 # use yield to give ans. return to stop
 def solve():
+    n = inp()
+    s = insr()
+    
+    def check(k):
+        curr = deque()
+        for i in range(n):
+            while curr and curr[0] <= i:
+                curr.popleft()
+
+            if i + k > n:
+                if (s[i] == "0" and len(curr) % 2 != 1)\
+                or (s[i] == "1" and len(curr) % 2 != 0):
+                    return False
+
+            if (s[i] == "0" and len(curr) % 2 != 1)\
+            or (s[i] == "1" and len(curr) % 2 != 0):
+                curr.append(i + k)
+
+        return True
+    
+    mx = 0
+    for i in range(1, n + 1):
+        if check(i):
+            mx = i
+    yield mx
 
 def test():
     ans = []

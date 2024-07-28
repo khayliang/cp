@@ -1,9 +1,9 @@
 import sys
 import math
 import heapq
-import bisect
 from collections import deque, defaultdict
 from itertools import permutations
+import bisect
 from types import GeneratorType
 
 input = sys.stdin.readline
@@ -54,6 +54,32 @@ def bootstrap(f, stack=deque()):
 
 # use yield to give ans. return to stop
 def solve():
+    n, k = inlt()
+    a = inlt()
+    b = inlt()
+
+    order = sorted(range(n), key=lambda i: b[i], reverse=True)
+    
+    f, p = 0, sum(max(0, b[i] - a[i]) for i in range(n))
+    ans = 0
+    s = []
+    
+    if len(s) == k:
+        ans = max(ans, p - f)
+    
+    for i in order:
+        p -= max(0, b[i] - a[i])
+        heapq.heappush(s, -a[i])
+        f += a[i]
+        if len(s) > k:
+            f -= -heapq.heappop(s)
+            
+        if len(s) == k:
+            ans = max(ans, p - f)
+
+    yield ans
+
+
 
 def test():
     ans = []
@@ -68,4 +94,4 @@ def submit():
         for a in solve():
             print(a)
 
-submit()
+test()

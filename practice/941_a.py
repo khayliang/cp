@@ -28,28 +28,17 @@ def solve():
     n = inp()
     a = inlt()
     a.sort()
-    acc = 0
-    turns = 0
-    for i, x in enumerate(a):
-        print(turns)
-        if x == acc:
-            continue
-
-        if x - acc == 1:
-            turns += 1
-            acc = x
-            continue
-
-        if (n - i) % 2 != 0:
-            turns += 2
-        else:
-            turns += 1
-        acc = x
-    # alice turn
-    if turns % 2 == 0:
-        yield "Bob"
+    mx = max(a)
+    mex = 1
+    for sz in a:
+        if sz == mex:
+            mex = mex + 1
+    if mex > mx:
+        yield "Alice" if mx % 2 == 1 else "Bob"
     else:
-        yield "Alice"
+        yield "Alice" if mex % 2 == 1 else "Bob"
+
+
         
 
 

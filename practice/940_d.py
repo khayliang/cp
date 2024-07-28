@@ -50,10 +50,39 @@ def bootstrap(f, stack=deque()):
                     to = stack[-1].send(to)
             return to
     return wrappedfunc
-    
+
+Z = 30
+MAX_N = 10**5 + 3
+pref = [[[0 for _ in range(2)] for _ in range(MAX_N)] for _ in range(Z)]
+suff = [[[0 for _ in range(2)] for _ in range(MAX_N)] for _ in range(Z)]
 
 # use yield to give ans. return to stop
 def solve():
+    n = inp()
+    a = [0] + inlt()
+
+    for i in range(Z):
+        suff[i][n+1][0] = suff[i][n+1][1] = 0
+    
+    for i in range(Z):
+        for j in range(1, n+1):
+            t = int(bool(a[j] & (1 << i)))
+            for k in range(2):
+                pref[i][j][k] = (t == k) + pref[i][j-1][k ^ t]
+        
+        for j in range(n, 0, -1):
+            t = int(bool(a[j] & (1 << i)))
+            for k in range(2):
+                suff[i][j][k] = (t == k) + suff[i][j+1][k ^ t]
+    
+    ans = 0
+    for i in range(1, n+1):
+        z = a[i].bit_length() - 1
+        ans += pref[z][i-1][1] * (1 + suff[z][i+1][0])
+        ans += (1 + pref[z][i-1][0]) * suff[z][i+1][1]
+    
+    yield ans
+
 
 def test():
     ans = []
@@ -68,4 +97,4 @@ def submit():
         for a in solve():
             print(a)
 
-submit()
+test()

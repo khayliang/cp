@@ -54,6 +54,39 @@ def bootstrap(f, stack=deque()):
 
 # use yield to give ans. return to stop
 def solve():
+    n, m, k = inlt()
+    a = inlt()
+    b = inlt()
+    bd = defaultdict(lambda: 0)
+    for x in b:
+        bd[str(x)] += 1
+    
+    good = 0
+    curr = defaultdict(lambda: 0)
+    res = 0
+    for i, x in enumerate(a):
+        if i < m:
+            curr[str(x)] += 1
+            if curr[str(x)] <= bd[str(x)]:
+                good += 1
+            
+            if i == m - 1 and good >= k:
+                res += 1
+            continue
+    
+        curr[str(x)] += 1
+        if curr[str(x)] <= bd[str(x)]:
+            good += 1
+
+        rmv = a[i - m]
+        curr[str(rmv)] -= 1
+        if bd[str(rmv)] > curr[str(rmv)]:
+            good -= 1
+        
+        if good >= k:
+            res += 1
+
+    yield res
 
 def test():
     ans = []
