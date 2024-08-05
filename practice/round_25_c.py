@@ -50,24 +50,20 @@ def bootstrap(f, stack=deque()):
                     to = stack[-1].send(to)
             return to
     return wrappedfunc
+    
 
-MOD = 1e9 + 7
- 
 # use yield to give ans. return to stop
 def solve():
-    s = insr()
-    n = len(s)
-    pf = [0]
-    for x in s:
-        pf.append(pf[-1] + (1 if x == "1" else -1))
-    print(pf)
-    cnt = defaultdict(lambda: 0)
-    ans = 0
-    for i in range(n + 1):
-        ans = (ans + (n - i + 1) * cnt[pf[i]]) % MOD
-        cnt[pf[i]] = (cnt[pf[i]] + (i + 1)) % MOD
-
-    yield int(ans) 
+    n, m, k = inlt()
+    a = inlt()
+    a.sort()
+    res = 0
+    for i in range(k // m):
+        res += (a[i] + i * m) * m
+    last = k // m
+    if k % m != 0:
+        res += (a[last] + last * m) * (k % m)
+    yield res
 
 
 def test():
