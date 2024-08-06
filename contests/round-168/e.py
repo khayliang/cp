@@ -54,6 +54,7 @@ def bootstrap(f, stack=deque()):
 
 # use yield to give ans. return to stop
 def solve():
+    
 
 def test():
     ans = []
