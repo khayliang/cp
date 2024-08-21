@@ -62,10 +62,14 @@ def test():
             ans.append(a)
     for i in ans:
         print(i)
+        sys.stdout.flush()
+
 
 def submit():
     for _ in range(inp()):
         for a in solve():
             print(a)
+            sys.stdout.flush()
+
 
 submit()
