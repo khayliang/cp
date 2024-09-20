@@ -25,8 +25,6 @@ def outlt(a):
 
 ############ ---- Constants ---- ############
 INF = float('inf')
-MOD = int(1e9) + 7
-N = int(2e5) + 5
 
 ############ ---- Function to Bootstrap Recursion ---- ############
 """
@@ -52,49 +50,25 @@ def bootstrap(f, stack=deque()):
                     to = stack[-1].send(to)
             return to
     return wrappedfunc
-
-facts = [1]
-for i in range(1, N):
-    facts.append((facts[-1] * i) % MOD)
-
-
-def pw(a, b):
-    r = 1
-    while b > 0:
-        if b & 1:
-            r = (r * a) % MOD
-        b //= 2
-        a = (a * a) % MOD
-    return r
-
-
-def mod_inverse(a):
-    return pw(a, MOD - 2)
-
-def comb(n, k):
-    if n < k:
-        return 0
-    global facts
-    return (facts[n] * pw((facts[n - k] * facts[k]) % MOD, MOD - 2)) % MOD
-
+    
 
 # use yield to give ans. return to stop
 def solve():
     n, k = inlt()
     a = inlt()
-    zeros = 0
-    ones = 0
-    for x in a:
-        if x == 0:
-            zeros += 1
+    a.sort(reverse=True)
+    diffs = 0
+    for i in range(0, n, 2):
+        if i == n - 1:
+            continue
         else:
-            ones += 1
-    res = 0
-    for amt in range((k + 1) // 2, k + 1):
-        if ones < amt:
-            break
-        res = (res + (((comb(ones, amt) % MOD) * (comb(zeros, k - amt) % MOD)) % MOD)) % MOD
-    yield res
+            diffs += a[i] - a[i + 1]
+    
+    diffs = diffs - k if diffs - k > 0 else 0
+    if n % 2 == 1:
+        diffs += a[-1]
+        
+    yield diffs
 
 def test():
     ans = []
@@ -112,4 +86,4 @@ def submit():
             print(a)
             sys.stdout.flush()
 
-test()
+submit()

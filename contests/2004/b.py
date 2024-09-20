@@ -25,8 +25,6 @@ def outlt(a):
 
 ############ ---- Constants ---- ############
 INF = float('inf')
-MOD = int(1e9) + 7
-N = int(2e5) + 5
 
 ############ ---- Function to Bootstrap Recursion ---- ############
 """
@@ -52,49 +50,27 @@ def bootstrap(f, stack=deque()):
                     to = stack[-1].send(to)
             return to
     return wrappedfunc
-
-facts = [1]
-for i in range(1, N):
-    facts.append((facts[-1] * i) % MOD)
-
-
-def pw(a, b):
-    r = 1
-    while b > 0:
-        if b & 1:
-            r = (r * a) % MOD
-        b //= 2
-        a = (a * a) % MOD
-    return r
-
-
-def mod_inverse(a):
-    return pw(a, MOD - 2)
-
-def comb(n, k):
-    if n < k:
-        return 0
-    global facts
-    return (facts[n] * pw((facts[n - k] * facts[k]) % MOD, MOD - 2)) % MOD
-
+    
 
 # use yield to give ans. return to stop
 def solve():
-    n, k = inlt()
-    a = inlt()
-    zeros = 0
-    ones = 0
-    for x in a:
-        if x == 0:
-            zeros += 1
-        else:
-            ones += 1
-    res = 0
-    for amt in range((k + 1) // 2, k + 1):
-        if ones < amt:
-            break
-        res = (res + (((comb(ones, amt) % MOD) * (comb(zeros, k - amt) % MOD)) % MOD)) % MOD
-    yield res
+    seg = [inlt(), inlt()]
+    seg.sort(key=lambda x: x[0])
+    if seg[0][1] < seg[1][0]:
+        yield 1
+        return
+    
+    overlap = 0
+    for i in range(seg[0][0], seg[0][1] + 1):
+        if i >= seg[1][0] and i <= seg[1][1]:
+            overlap += 1
+    overlap += 1
+    if seg[0][0] == seg[1][0]:
+        overlap -= 1
+    if seg[0][1] == seg[1][1]:
+        overlap -= 1
+    yield overlap
+
 
 def test():
     ans = []
@@ -112,4 +88,5 @@ def submit():
             print(a)
             sys.stdout.flush()
 
-test()
+
+submit()

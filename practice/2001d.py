@@ -25,8 +25,6 @@ def outlt(a):
 
 ############ ---- Constants ---- ############
 INF = float('inf')
-MOD = int(1e9) + 7
-N = int(2e5) + 5
 
 ############ ---- Function to Bootstrap Recursion ---- ############
 """
@@ -52,50 +50,81 @@ def bootstrap(f, stack=deque()):
                     to = stack[-1].send(to)
             return to
     return wrappedfunc
-
-facts = [1]
-for i in range(1, N):
-    facts.append((facts[-1] * i) % MOD)
-
-
-def pw(a, b):
-    r = 1
-    while b > 0:
-        if b & 1:
-            r = (r * a) % MOD
-        b //= 2
-        a = (a * a) % MOD
-    return r
-
-
-def mod_inverse(a):
-    return pw(a, MOD - 2)
-
-def comb(n, k):
-    if n < k:
-        return 0
-    global facts
-    return (facts[n] * pw((facts[n - k] * facts[k]) % MOD, MOD - 2)) % MOD
-
+    
 
 # use yield to give ans. return to stop
 def solve():
-    n, k = inlt()
+    n = inp()
     a = inlt()
-    zeros = 0
-    ones = 0
-    for x in a:
-        if x == 0:
-            zeros += 1
-        else:
-            ones += 1
-    res = 0
-    for amt in range((k + 1) // 2, k + 1):
-        if ones < amt:
-            break
-        res = (res + (((comb(ones, amt) % MOD) * (comb(zeros, k - amt) % MOD)) % MOD)) % MOD
-    yield res
+    d = defaultdict(lambda: 0)
+    for i, x in enumerate(a):
+        d[x] = i
 
+    res = []
+
+    mnhp = []
+    mxhp = []
+    l = -1
+    r = -1
+    added = set()
+    for k in sorted(d.values()):
+        if len(res) == len(d.keys()):
+            break
+            
+        i = r + 1
+        r = k
+        while i <= r:
+            if a[i] not in added:
+                heapq.heappush(mnhp, (a[i], i))
+                heapq.heappush(mxhp, (-a[i], i))
+            i += 1
+        v = a[k]
+        if v in added:
+            continue
+
+        while True:
+            # max
+            if len(res) % 2 == 0:
+                if not mxhp:
+                    break
+                w, j = heapq.heappop(mxhp)
+                w = -w
+                if j <= l or w in added:
+                    continue
+
+                while mxhp and w == -mxhp[0][0]:
+                    _, ji = heapq.heappop(mxhp)
+                    if ji > l:
+                        j = min(j, ji)
+
+                if w >= v:
+                    res.append(w)
+                    added.add(w)
+                    l = j
+                    if w == v:
+                        break
+            else:
+                if not mnhp:
+                    break
+                w, j = heapq.heappop(mnhp)
+                if j <= l or w in added:
+                    continue
+
+                while mnhp and w == mnhp[0][0]:
+                    _, ji = heapq.heappop(mnhp)
+                    if ji > l:
+                        j = min(j, ji)
+                    
+                if w <= v:
+                    res.append(w)
+                    added.add(w)
+                    l = j
+                    if w == v:
+                        break
+
+    yield len(res)
+    yield outlt(res)
+                
 def test():
     ans = []
     for _ in range(inp()):
@@ -112,4 +141,4 @@ def submit():
             print(a)
             sys.stdout.flush()
 
-test()
+submit()

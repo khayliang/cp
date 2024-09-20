@@ -25,8 +25,6 @@ def outlt(a):
 
 ############ ---- Constants ---- ############
 INF = float('inf')
-MOD = int(1e9) + 7
-N = int(2e5) + 5
 
 ############ ---- Function to Bootstrap Recursion ---- ############
 """
@@ -53,48 +51,57 @@ def bootstrap(f, stack=deque()):
             return to
     return wrappedfunc
 
-facts = [1]
-for i in range(1, N):
-    facts.append((facts[-1] * i) % MOD)
-
-
-def pw(a, b):
-    r = 1
-    while b > 0:
-        if b & 1:
-            r = (r * a) % MOD
-        b //= 2
-        a = (a * a) % MOD
-    return r
-
-
-def mod_inverse(a):
-    return pw(a, MOD - 2)
-
-def comb(n, k):
-    if n < k:
-        return 0
-    global facts
-    return (facts[n] * pw((facts[n - k] * facts[k]) % MOD, MOD - 2)) % MOD
-
 
 # use yield to give ans. return to stop
 def solve():
-    n, k = inlt()
-    a = inlt()
-    zeros = 0
-    ones = 0
-    for x in a:
-        if x == 0:
-            zeros += 1
+    n, q = inlt()
+    a = input().split()
+    portals = defaultdict(lambda: [])
+    for i, x in enumerate(a):
+        portals[x].append(i)
+    for _ in range(q):
+        x, y = inlt()
+        px = a[x - 1]
+        py = a[y - 1]
+        xcolors = set(px)
+        ycolors = set(py)
+
+        meds = []
+        found = False
+        for c in xcolors:
+            if c in ycolors:
+                yield abs(y - x)
+                found = True
+                break
+            for d in ycolors:
+                meds.append("".join(sorted([c, d])))
+        if found:
+            continue
+
+        mn = INF
+        for p in meds:
+            m = len(portals[p])
+            if m == 0:
+                continue
+            l = bisect.bisect_left(portals[p], x - 1)
+            r = bisect.bisect_left(portals[p], y - 1)
+            # lleft
+            ll = portals[p][max(0, l - 1)] + 1
+            mn = min(mn, abs(ll - x) + abs(ll - y))
+            # lright
+            lr = portals[p][min(m - 1, l)] + 1
+            mn = min(mn, abs(lr - x) + abs(lr - y))
+            # rleft
+            rl = portals[p][max(0, r - 1)] + 1
+            mn = min(mn, abs(rl - x) + abs(rl - y))
+            # rright
+            rr = portals[p][min(m - 1, r)] + 1
+            mn = min(mn, abs(rr - y) + abs(rr - x))
+        
+        if mn == INF:
+            yield -1
         else:
-            ones += 1
-    res = 0
-    for amt in range((k + 1) // 2, k + 1):
-        if ones < amt:
-            break
-        res = (res + (((comb(ones, amt) % MOD) * (comb(zeros, k - amt) % MOD)) % MOD)) % MOD
-    yield res
+            yield mn
 
 def test():
     ans = []
@@ -112,4 +119,5 @@ def submit():
             print(a)
             sys.stdout.flush()
 
-test()
+
+submit()
