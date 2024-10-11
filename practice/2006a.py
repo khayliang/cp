@@ -51,9 +51,9 @@ def bootstrap(f, stack=deque()):
             return to
     return wrappedfunc
     
+
 # use yield to give ans. return to stop
 def solve():
-    
 
 def test():
     ans = []
@@ -63,6 +63,7 @@ def test():
     for i in ans:
         print(i)
         sys.stdout.flush()
+
 
 def submit():
     for _ in range(inp()):

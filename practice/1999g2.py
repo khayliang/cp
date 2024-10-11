@@ -51,9 +51,25 @@ def bootstrap(f, stack=deque()):
             return to
     return wrappedfunc
     
+
 # use yield to give ans. return to stop
 def solve():
-    
+    l = 2
+    r = 1000
+    while l < r:
+        ml = l + (r - l) // 3
+        mr = l + (2 * (r - l)) // 3
+        yield f"? {ml} {mr}"
+        x = int(inp())
+        if x == ml * mr:
+            l = mr + 1
+        elif x == (mr + 1) * ml:
+            l = ml + 1
+            r = mr
+        else:
+            r = ml
+        
+    yield f"! {l}"
 
 def test():
     ans = []
@@ -63,6 +79,7 @@ def test():
     for i in ans:
         print(i)
         sys.stdout.flush()
+
 
 def submit():
     for _ in range(inp()):
