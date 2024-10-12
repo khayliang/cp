@@ -53,7 +53,27 @@ def bootstrap(f, stack=deque()):
     
 # use yield to give ans. return to stop
 def solve():
+    n, m = inlt()
+    mx = 0
+    for _ in range(n):
+        a = sorted(list(set(inlt()[1:])))
+        mex = 0
+        mexabove = 1
+        for x in a:
+            if mex == x:
+                mex += 1
+                mexabove = mex + 1
+            elif mexabove == x:
+                mexabove += 1
+            else:
+                break
+        mx = max(mx, mexabove)
+    if mx >= m:
+        yield mx * (m + 1)
+    else:
+        yield mx**2 + ((mx + m) * (m - mx + 1)) // 2 
     
+
 def test():
     ans = []
     for _ in range(inp()):
@@ -70,4 +90,4 @@ def submit():
             sys.stdout.flush()
 
 
-submit()
+test()
