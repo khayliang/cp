@@ -53,24 +53,36 @@ def bootstrap(f, stack=deque()):
     
 # use yield to give ans. return to stop
 def solve():
-    n, m, k = inlt()
-    w = inp()
+    n, k = inlt()
     a = inlt()
-    amt = [[0 for _ in range(m)] for _ in range(n)]
-    for i in range(n):
-        for j in range(m):
-            amt[i][j] = (((min(i + k, n) - k) - max(i - k + 1, 0)) + 1) * (((min(j + k, m) - k) - max(j - k + 1, 0)) + 1)
-    amt_sorted = []
-    for i in range(n):
-        for j in range(m):
-            heapq.heappush(amt_sorted, -amt[i][j])
-    res = 0
-    a.sort(reverse=True)
+    count = defaultdict(lambda: 0)
     for x in a:
-        mult = - heapq.heappop(amt_sorted)
-        res += mult * x
-    yield res
+        count[str(x)] += 1
 
+    d = sorted(list(set(a)))
+    l, r = 0, 0
+    curr = 0
+    curr_amt = 1
+    mx = 0
+    while l != len(d):
+        curr += count[str(d[r])]
+        mx = max(curr, mx)
+        if r + 1 == len(d):
+            break
+        if d[r + 1] == d[r] + 1:
+            r += 1
+            if curr_amt == k:
+                curr -= count[str(d[l])]
+                l += 1
+            else:
+                curr_amt += 1
+        else:
+            curr_amt = 1
+            curr = 0
+            r += 1
+            l = r
+    yield mx
+    
 def test():
     ans = []
     for _ in range(inp()):
@@ -78,10 +90,13 @@ def test():
             ans.append(a)
     for i in ans:
         print(i)
+        sys.stdout.flush()
 
 def submit():
     for _ in range(inp()):
         for a in solve():
             print(a)
+            sys.stdout.flush()
 
-test()
+
+submit()

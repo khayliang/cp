@@ -50,27 +50,38 @@ def bootstrap(f, stack=deque()):
                     to = stack[-1].send(to)
             return to
     return wrappedfunc
+
+letters = set(list("narek"))
+letters_list = list("narek")
     
 # use yield to give ans. return to stop
 def solve():
-    n, m, k = inlt()
-    w = inp()
-    a = inlt()
-    amt = [[0 for _ in range(m)] for _ in range(n)]
-    for i in range(n):
-        for j in range(m):
-            amt[i][j] = (((min(i + k, n) - k) - max(i - k + 1, 0)) + 1) * (((min(j + k, m) - k) - max(j - k + 1, 0)) + 1)
-    amt_sorted = []
-    for i in range(n):
-        for j in range(m):
-            heapq.heappush(amt_sorted, -amt[i][j])
-    res = 0
-    a.sort(reverse=True)
-    for x in a:
-        mult = - heapq.heappop(amt_sorted)
-        res += mult * x
-    yield res
+    n, m = inlt()
+    # represents the maximum score suppose we're looking for the ith character in narek
+    dp = [-INF for _ in range(5)]
+    dp[0] = 0
+    for _ in range(n):
+        ndp = list(dp)
+        w = insr()
+        for i in range(5):
+            if dp[i] == -INF:
+                continue
+            curr_i = i
+            score = 0
+            for c in w:
+                if c not in letters:
+                    continue
+                score -= 1
+                if c == letters_list[curr_i]:
+                    curr_i += 1
+                    if curr_i % 5 == 0:
+                        score += 10
+                        curr_i = 0
+            ndp[curr_i] = max(ndp[curr_i], dp[i] + score)
 
+        dp = ndp
+    yield max(dp) if max(dp) != -INF else 0
+    
 def test():
     ans = []
     for _ in range(inp()):
@@ -78,10 +89,13 @@ def test():
             ans.append(a)
     for i in ans:
         print(i)
+        sys.stdout.flush()
 
 def submit():
     for _ in range(inp()):
         for a in solve():
             print(a)
+            sys.stdout.flush()
+
 
 test()

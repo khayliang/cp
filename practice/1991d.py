@@ -50,27 +50,53 @@ def bootstrap(f, stack=deque()):
                     to = stack[-1].send(to)
             return to
     return wrappedfunc
+
+"""
+Primes within the range 0 to n
+"""
+def sieve_of_eratosthenes(n):
+    prime = [True] * (n + 1)
+    p = 2
+    while (p * p <= n):
+        if prime[p] == True:
+            for i in range(p * p, n + 1, p):
+                prime[i] = False
+        p += 1
     
+    prime_numbers = []
+    for p in range(2, n + 1):
+        if prime[p]:
+            prime_numbers.append(p)
+    return prime_numbers
+
 # use yield to give ans. return to stop
 def solve():
-    n, m, k = inlt()
-    w = inp()
-    a = inlt()
-    amt = [[0 for _ in range(m)] for _ in range(n)]
-    for i in range(n):
-        for j in range(m):
-            amt[i][j] = (((min(i + k, n) - k) - max(i - k + 1, 0)) + 1) * (((min(j + k, m) - k) - max(j - k + 1, 0)) + 1)
-    amt_sorted = []
-    for i in range(n):
-        for j in range(m):
-            heapq.heappush(amt_sorted, -amt[i][j])
-    res = 0
-    a.sort(reverse=True)
-    for x in a:
-        mult = - heapq.heappop(amt_sorted)
-        res += mult * x
-    yield res
-
+    n = inp()
+    if n == 1:
+        yield 1
+        yield outlt([1])
+    elif n == 2:
+        yield 2
+        yield outlt([1, 2])
+    elif n == 3:
+        yield 2
+        yield outlt([1, 2, 2])
+    elif n == 4:
+        yield 3
+        yield outlt([1, 2, 2, 3])
+    elif n == 5:
+        yield 3
+        yield outlt([1, 2, 2, 3, 3])
+    elif n == 6:
+        yield 4
+        yield outlt([1, 2, 2, 3, 3, 4])
+    else:
+        yield 4
+        res = []
+        for i in range(1, n+1):
+            res.append(i % 4 + 1)
+        yield outlt(res)
+    
 def test():
     ans = []
     for _ in range(inp()):
@@ -78,10 +104,13 @@ def test():
             ans.append(a)
     for i in ans:
         print(i)
+        sys.stdout.flush()
 
 def submit():
     for _ in range(inp()):
         for a in solve():
             print(a)
+            sys.stdout.flush()
 
-test()
+
+submit()

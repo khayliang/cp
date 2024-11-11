@@ -53,35 +53,46 @@ def bootstrap(f, stack=deque()):
     
 # use yield to give ans. return to stop
 def solve():
-    n, m, k = inlt()
-    w = inp()
-    a = inlt()
-    amt = [[0 for _ in range(m)] for _ in range(n)]
-    for i in range(n):
-        for j in range(m):
-            amt[i][j] = (((min(i + k, n) - k) - max(i - k + 1, 0)) + 1) * (((min(j + k, m) - k) - max(j - k + 1, 0)) + 1)
-    amt_sorted = []
-    for i in range(n):
-        for j in range(m):
-            heapq.heappush(amt_sorted, -amt[i][j])
-    res = 0
-    a.sort(reverse=True)
-    for x in a:
-        mult = - heapq.heappop(amt_sorted)
-        res += mult * x
-    yield res
+    n, m = inlt()
+    r = inlt()
+    a = []
+    curr = 0
+    for x in r:
+        if x == 0:
+            curr += 1
+        else:
+            if curr != 0:
+                a.append((0, curr))
+                curr = 0
+            if x > 0:
+                a.append((1, x))
+            else:
+                a.append((2, -x))
+    if curr != 0:
+        a.append((0, curr))
+    dpi = [0 for _ in range(m + 1)]
+    dps = [0 for _ in range(m + 1)]
+    tot = 0
+    for typ, amt in a:
+        if typ == 0:
+            tot += amt
+        elif typ == 1: # int
+            if amt <= tot:
+                dpi[amt] += 1
+        else:
+            if amt <= tot:
+                dps[amt] += 1
+    ipf = [0]
+    for x in dpi:
+        ipf.append(ipf[-1] + x)
+    spf = [0]
+    for x in dps:
+        spf.append(spf[-1] + x)
+    res = []
+    for i in range(m + 1):
+        res.append(ipf[i + 1] + spf[m + 1 - i])
+    
+    print(max(res))
 
-def test():
-    ans = []
-    for _ in range(inp()):
-        for a in solve():
-            ans.append(a)
-    for i in ans:
-        print(i)
 
-def submit():
-    for _ in range(inp()):
-        for a in solve():
-            print(a)
-
-test()
+solve()
