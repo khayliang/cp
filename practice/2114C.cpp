@@ -26,14 +26,33 @@ vector<int> read_int_arr(int n) {
     return arr;
 }
 
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
+void run() {
+    int n;
+    cin >> n;
+    vector<int> a_raw = read_int_arr(n);
+    vector<int> a {};
+    for (int x : a_raw) {
+        if (a.size() != 0 && a.back() == x) continue;
+        a.push_back(x);
+    }
 
+    int res = 1;
+    int prev = a[0];
+    repeat(i, 1, a.size()) {
+        if (prev + 1 != a[i]) {
+            ++res;
+            prev = a[i];
+        }
+    }
+    cout << res << "\n";
+}
+
+int main() {
     int t;
     cin >> t;
+
     while (t--) {
-        
+        run();
     }
     return 0;
 }
