@@ -41,7 +41,38 @@ vector<int> read_int_arr(int n) {
 }
 
 void run() {
-    
+    int n;
+    cin >> n;
+    auto a = read_int_arr(n);
+    auto edges = vector<vector<int>>(n);
+    auto parents = vector<int>(n);
+    repeat(i, 0, n - 1) {
+        int x, y;
+        cin >> x >> y;
+        --x, --y;
+        edges[x].pb(y), edges[y].pb(x);
+    }
+    auto mins = vector<ll>(n);
+    auto maxs = vector<ll>(n);
+
+    auto dfs = [&](auto&& self, int curr) -> void {
+        if (curr == 0) {
+            parents[0] == -1;
+            mins[0] = a[0];
+            maxs[0] = a[0];
+        } else {
+            int parent = parents[curr];
+            mins[curr] = min({1LL * a[curr] - mins[parent], 1LL * a[curr] - maxs[parent], 1LL * a[curr]});
+            maxs[curr] = max({1LL * a[curr] - mins[parent], 1LL * a[curr] - maxs[parent], 1LL * a[curr]});
+        }
+        for (int v : edges[curr]) {
+            if (v == parents[curr]) continue;
+            parents[v] = curr;
+            self(self, v);
+        }
+    };
+    dfs(dfs, 0);
+    print_vec(maxs);
 }
 
 int main() {
