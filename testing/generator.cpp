@@ -2,20 +2,16 @@
 #include <string>
 #include <cstdlib>
 #include <set>
+#include <vector>
 
 using namespace std;
 
 int main() {
     cout << "1\n";
-    int n = 10;
-    cout << n << "\n";
-    for (int i = 0; i != n; ++i) {
-        cout << -(rand() % 2) << " ";
-    }
-    cout << "\n";
-    for (int i = 0; i != n; ++i) {
-        int x = rand() % 10;
-        int y = rand() % 10;
-        cout << min(x, y) << " " << max(x, y) << "\n";
-    }
+    int n = (rand() % 10000) + 1;
+    int m = (rand() % 10000) + 1;
+    cout << n << " " 
+    << m << " " 
+    << (rand() % n) + 1<< " " 
+    << (rand() % m) + 1<< "\n";
 }

@@ -1,58 +1,37 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 
 using namespace std;
 
 void solve() {
-    int n;
-    cin >> n;
-    vector<int> d(n);
-    for (auto &x : d) {
-        cin >> x;
-    }
-    vector<int> l(n), r(n);
-    for (int i = 0; i < n; ++i) {
-        cin >> l[i] >> r[i];
-    }
-    int left = 0;
-    vector<int> last;
-    for (int i = 0; i < n; ++i) {
-        if (d[i] == -1) {
-            last.push_back(i);
-        } else {
-            left += d[i];
+    int n, m, a, b;
+    cin >> n >> m >> a >> b;
+
+    vector<pair<int, int>> rec({
+    make_pair(a, m), make_pair(n - a + 1, m),
+    make_pair(n, b), make_pair(n, m - b + 1)});
+
+    int ans = n + m;
+    for (auto [n1, m1] : rec) {
+        int res = 0;
+        while (n1 > 1) {
+            ++res;
+            n1 = (n1 + 1) / 2;
         }
-        while (left < l[i]) {
-            if (last.empty()) {
-                cout << -1 << '\n';
-                return;
-            }
-            d[last.back()] = 1;
-            ++left;
-            last.pop_back();
+        while (m1 > 1) {
+            ++res;
+            m1 = (m1 + 1) / 2;
         }
-        while (left + last.size() > r[i]) {
-            if (last.empty()) {
-                cout << -1 << '\n';
-                return;
-            }
-            d[last.back()] = 0;
-            last.pop_back();
-        }
+        ans = min(ans, res);
     }
-    for (auto &x : d) {
-        cout << max(0, x) << " ";
-    }
-    cout << "\n";
-    return;
+
+    cout << 1 + ans << "\n";
 }
 
-signed main() {
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-    int t;
+int main() {
+    ios::sync_with_stdio(0), cin.tie(0);
+    int t = 1;
     cin >> t;
     while (t--) {
         solve();
     }
-    return 0;
 }

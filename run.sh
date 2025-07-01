@@ -20,8 +20,8 @@ fi
 mkdir -p ./build
 
 if [ "$2" = "tgt" ]; then
-  res=$(g++ -std=c++17 -O2 -o ./build/a $filepath && ./build/a)
+  res=$(g++ -std=c++17 -g -o ./build/a $filepath && ./build/a)
   echo "$res"
 else
-  g++ -std=c++17 -O2 -o ./build/a $filepath && ./build/a
+  g++ -std=c++17 -g -o ./build/a $filepath && ./build/a
 fi

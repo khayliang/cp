@@ -43,7 +43,20 @@ vector<int> read_int_arr(int n) {
 }
 
 void run() {
-    
+    int n, m, a, b;
+    cin >> n >> m >> a >> b;
+
+    vector<pair<int, int>> rec = { mp(a, m), mp(n - a + 1, m), mp(n, b), mp(n, m - b + 1) };
+
+    ll ans = INF;
+    for (auto [n1, m1] : rec) {
+        ll res = 0;
+        res += (n1 > 1) ? (int)ceil(log2(n1)) : 0;
+        res += (m1 > 1) ? (int)ceil(log2(m1)) : 0;
+        ans = min(ans, res);
+    }
+
+    cout << 1 + ans << "\n";
 }
 
 int main() {

@@ -43,7 +43,18 @@ vector<int> read_int_arr(int n) {
 }
 
 void run() {
-    
+    int n;
+    cin >> n;
+    cout << 3 + max(0, n - 3) * 2 << "\n";
+    repeat(i, 1, n) {
+        int ll = 1;
+        int lr = i;
+        int rl = i + 1;
+        int rr = n;
+        if (ll != lr) cout << i << " " << ll << " " << lr << "\n";
+        if (rl != rr) cout << i << " " << rl << " " << rr << "\n";
+    }
+    cout << n << " " << 1 << " " << n << "\n";
 }
 
 int main() {
